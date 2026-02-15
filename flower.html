@@ -327,29 +327,12 @@
     <script>
       const sound = document.getElementById("bgSound");
 
-      function startAudio() {
-        if (!sound) return;
-
-        sound.volume = 1;
-        sound.currentTime = 0;
-
-        sound.play().catch(() => {});
-
-        document.removeEventListener("pointerdown", startAudio);
-        document.removeEventListener("visibilitychange", startAudio);
-      }
-
-      document.addEventListener("pointerdown", startAudio);
-
-      document.addEventListener("visibilitychange", () => {
-        if (document.visibilityState === "visible") {
-          startAudio();
-        }
-      });
-
-      // fallback auto attempt
       window.addEventListener("load", () => {
-        setTimeout(startAudio, 300);
+        if (sessionStorage.getItem("playSound") === "true") {
+          sound.volume = 1;
+          sound.currentTime = 0;
+          sound.play().catch(() => {});
+        }
       });
     </script>
 
