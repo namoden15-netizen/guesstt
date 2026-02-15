@@ -325,14 +325,21 @@
     <audio id="bgSound" src="sound.mp3" loop></audio>
 
     <script>
-      document.addEventListener(
-        "click",
-        () => {
-          const sound = document.getElementById("bgSound");
-          if (sound) sound.play();
-        },
-        { once: true },
-      );
+      const sound = document.getElementById("bgSound");
+
+      function startAudio() {
+        if (sound) {
+          sound.currentTime = 0;
+          sound.volume = 1;
+          sound.play();
+        }
+
+        document.removeEventListener("click", startAudio);
+        document.removeEventListener("touchstart", startAudio);
+      }
+
+      document.addEventListener("click", startAudio);
+      document.addEventListener("touchstart", startAudio);
     </script>
 
     <script src="main.js"></script>
