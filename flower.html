@@ -328,18 +328,29 @@
       const sound = document.getElementById("bgSound");
 
       function startAudio() {
-        if (sound) {
-          sound.currentTime = 0;
-          sound.volume = 1;
-          sound.play();
-        }
+        if (!sound) return;
 
-        document.removeEventListener("click", startAudio);
-        document.removeEventListener("touchstart", startAudio);
+        sound.volume = 1;
+        sound.currentTime = 0;
+
+        sound.play().catch(() => {});
+
+        document.removeEventListener("pointerdown", startAudio);
+        document.removeEventListener("visibilitychange", startAudio);
       }
 
-      document.addEventListener("click", startAudio);
-      document.addEventListener("touchstart", startAudio);
+      document.addEventListener("pointerdown", startAudio);
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          startAudio();
+        }
+      });
+
+      // fallback auto attempt
+      window.addEventListener("load", () => {
+        setTimeout(startAudio, 300);
+      });
     </script>
 
     <script src="main.js"></script>
